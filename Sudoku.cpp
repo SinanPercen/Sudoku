@@ -200,7 +200,7 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
         //updateGUI();
         updateGUI();
     } else { //TODO ungültige eingabe handlen
-        key = ' ';
+
     }
 }
 
