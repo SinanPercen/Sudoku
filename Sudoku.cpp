@@ -16,6 +16,7 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
                                                                   ui(new Ui::SudokuClass), size(size*size) {
     ui->setupUi(this);
     sudokuTable = ui->sudokuTable;
+    amountPlayers = playerSize;
     playerTable = ui->playerTable;
     int gridSize = this->gridSize();
     QFont font;
@@ -45,6 +46,7 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     //Initialisiere GUI
     initialGUI();
 
+
     //Initalisieren des Felds
     createSolution();
 
@@ -53,24 +55,18 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     for (int i = 0; i < playerSize; i++) {
         QString name = "Player ";
         name.append(QString::number(i + 1));
-        players.push_back(name);
-        //players[i] = name;
-        addPlayer(name); //kann weg
+        qDebug() << "name" << name;
+        players.append(name);
+        scores.push_back(0);
+        //players = name;
+        addPlayer(name);
     }
-//test
-    //methode - mouse_clicked methode im konstruktor, dann currentCell variable setzen (herausfinden welche zelle man ist)
-    //while schleife
-    //for schleife anzahl der spieler
-    //  if input isPossible
-        //if lösungssudoku
+    ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
 
-            //grün
-            //else
-            //gelb
-    //player score += input
-    //else
-    //rot
-    //nächster spieler dran
+
+
+
+
     /**
      *
 
@@ -137,7 +133,7 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
         key = std::toupper(key);
     }
     std::vector<char> allowedChars = getAllowedCharacters();
-    if(97 -122)
+
 
     //wenn gefunden, gibt key zurück und wenn nicht, gibt allowedChars.end() zurück
     if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
@@ -162,13 +158,16 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
                 // Gültig aber nicht richtig -> gelb
                 // Beispiel: Setzen Sie den Hintergrund der Zelle auf gelb
                 sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::yellow);
-                //vllt wechseln?
+                //vllt wechseln? changePlayer()
             }
         } else {
             // Nicht gültig -> rot
             // Beispiel: Setzen Sie den Hintergrund der Zelle auf rot
             //player next
             sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::red);
+            //spieler wecheln  changePlayer();
+            changePlayer();
+
         }
 
         // Beispiel: Aktualisieren Sie die GUI
@@ -180,7 +179,15 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
 }
 
 
+void Sudoku::changePlayer() {
+    if (currentPlayer == amountPlayers - 1) {
+        currentPlayer = 0;
+    } else {
+        currentPlayer++;
+    }
+    ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
 
+}
 
 class Attempt {
 public:
@@ -269,8 +276,7 @@ void Sudoku::createSolution() {
 
     complete(1);
     solutionFields.assign(fields.begin(), fields.end());
-    //TODO maxDelete
-    int maxDelete = 40;
+    int maxDelete = 40; //todo difficulty also variabel
     std::set<int> deleted;
     while(true) {
         int rnd = std::rand() % size;

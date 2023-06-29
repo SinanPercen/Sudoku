@@ -44,7 +44,9 @@ private:
     std::vector<char> solutionFields;
     int currentPlayer = 0;
     int currentPosition = -1;
-    std::vector<QString> players;
+    QList<QString> players;
+    std::vector<int> scores;
+    int amountPlayers = 0;
 
     [[nodiscard]] int gridSize() const {
         return sqrt(size);
@@ -129,6 +131,8 @@ private:
     void keyPressEvent(QKeyEvent *event);
 
     void initialGUI();
+
+    void changePlayer();
 };
 
 #endif // SUDOKU_H
