@@ -40,8 +40,10 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     sudokuTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     sudokuTable->setFocusPolicy(Qt::NoFocus);
     sudokuTable->setSelectionMode(QAbstractItemView::NoSelection);
-
     QTableWidget::connect(sudokuTable, &QTableWidget::clicked, this, &Sudoku::tableMouseClicked);
+
+    //Initialisiere GUI
+    initialGUI();
 
     //Initalisieren des Felds
     createSolution();
@@ -148,22 +150,22 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
                 // Gültig und richtig -> grün
                 // Beispiel: Setzen Sie den Hintergrund der Zelle auf grün
                 //score add key
-                sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackground(Qt::green);
+                sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::green);
             } else {
                 // Gültig aber nicht richtig -> gelb
                 // Beispiel: Setzen Sie den Hintergrund der Zelle auf gelb
-                sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackground(Qt::yellow);
+                sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::yellow);
                 //vllt wechseln?
             }
         } else {
             // Nicht gültig -> rot
             // Beispiel: Setzen Sie den Hintergrund der Zelle auf rot
             //player next
-            sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackground(Qt::red);
+            sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::red);
         }
 
         // Beispiel: Aktualisieren Sie die GUI
-        updateGUI();
+        //updateGUI();
     }
 }
 
@@ -238,11 +240,22 @@ void Sudoku::updateGUI() {
         sudokuTable->setItem(pos.row, pos.column, entry);
     }
 }*/
-void Sudoku::updateGUI() {
+
+void Sudoku::initialGUI() {
     for(int i = 0; i < size; i++) {
-        QTableWidgetItem *entry = new QTableWidgetItem(QString::fromStdString(std::string(1, fields.at(i))));
+        QTableWidgetItem *entry = new QTableWidgetItem(QString::fromStdString(std::string(1, ' ')));
         entry->setTextAlignment(Qt::AlignCenter);
         sudokuTable->setItem(getRowFrom(i), getColumnFrom(i), entry);
+    }
+}
+
+void Sudoku::updateGUI() {
+    for(int i = 0; i < size; i++) {
+        QTableWidgetItem *entry = sudokuTable->item(getRowFrom(i), getColumnFrom(i));
+        entry->setText( QString::fromStdString(std::string(1, fields.at(i))));
+        //QTableWidgetItem *entry = new QTableWidgetItem(QString::fromStdString(std::string(1, fields.at(i))));
+        entry->setTextAlignment(Qt::AlignCenter);
+        //sudokuTable->setItem(getRowFrom(i), getColumnFrom(i), entry);
     }
 }
 

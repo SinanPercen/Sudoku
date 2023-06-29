@@ -127,6 +127,8 @@ private:
     void tableMouseClicked(const QModelIndex &index);
 
     void keyPressEvent(QKeyEvent *event);
+
+    void initialGUI();
 };
 
 #endif // SUDOKU_H
