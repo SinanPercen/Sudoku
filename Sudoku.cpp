@@ -37,6 +37,7 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     sudokuTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 
+    QTableWidget::connect(sudokuTable, &QTableWidget::clicked, this, &Sudoku::tableMouseClicked);
 
     //Initalisieren des Felds
     createSolution();
@@ -80,6 +81,11 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     // Speichern der Highscores
     //std::vector<Player> playerVector(players, players + playerCount); // Konvertiere Array in einen Vektor
     //saveHighscore(playerVector, "highscores.bin");
+
+}
+
+void Sudoku::tableMouseClicked(const QModelIndex &index) {
+
 
 }
 

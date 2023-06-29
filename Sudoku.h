@@ -116,6 +116,8 @@ private:
     int complete(int maxSolutions);
     [[nodiscard]] int findFree() const;
     [[nodiscard]] bool isPossible(int pos, char guess) const;
+
+    void tableMouseClicked(const QModelIndex &index);
 };
 
 #endif // SUDOKU_H
