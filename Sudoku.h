@@ -47,6 +47,7 @@ private:
     QList<QString> players;
     std::vector<int> scores;
     int amountPlayers = 0;
+    std::vector<char> usedCharsInTurn;
 
     [[nodiscard]] int gridSize() const {
         return sqrt(size);
@@ -135,6 +136,8 @@ private:
     void changePlayer();
 
     void changeScore();
+
+    bool checkIfContains(std::vector<char> vector, char Key);
 };
 
 #endif // SUDOKU_H

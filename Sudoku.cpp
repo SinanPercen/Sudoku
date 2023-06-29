@@ -11,6 +11,10 @@
 #include "set"
 #include <QDebug>
 #include <QKeyEvent>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iterator>
 
 Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
                                                                   ui(new Ui::SudokuClass), size(size*size) {
@@ -134,13 +138,11 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
     //taste einlesen
     QChar qtKey = event->text().at(0);
     char key= qtKey.toLatin1();
-    int score = 0;
-    fields[currentPosition] = key;
     //tabele reinschreiben
     std::cout << "Taste: " << key;
     qDebug() << "Taste:" << key;
 
-
+    fields[currentPosition] = key;
     // Hier können Sie die erlaubten Zeichen anpassen
     //wenn das Zeichen ein Buchstabe ist
     int asciiValue = static_cast<int>(key);
@@ -150,27 +152,34 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
     std::vector<char> allowedChars = getAllowedCharacters();
 
 
-    //wenn gefunden, gibt key zurück und wenn nicht, gibt allowedChars.end() zurück
-    if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
-        int addToScore;
+    QTableWidgetItem* item = sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition));
+    if (item) {
+        QColor backgroundColor = item->backgroundColor();
+        if (backgroundColor == Qt::green) {
+            return;
+        }
+    }
 
+    //wenn gefunden, gibt key zurück und wenn nicht, gibt allowedChars.end() zurück
+    if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) { //TODO
+        int addToScore = asciiValue;
+        //richtige Stelle in der ascii tabelle damit 1 = 1, ... und a = 10 usw. entspricht
         if (asciiValue > 96 ) { //wäre nicht drin
              addToScore = asciiValue-87;
+        } else if(asciiValue > 47 & asciiValue <58) {
+            addToScore = asciiValue - 48;
         }
 
-
-        // Überprüfen, ob die Eingabe gültig und richtig ist
-        //bool isValid = isValidInput(key, row, column);
-        //bool isCorrect = isCorrectInput(key, row, column);
-
         if (isPossible(currentPosition, key)) {
+
             if (key == solutionFields[currentPosition]) {
-                // Gültig und richtig -> grün
-                // Beispiel: Setzen Sie den Hintergrund der Zelle auf grün
-                //score add key
                 scores[currentPlayer] += addToScore;
+                usedCharsInTurn.push_back(key);
                 changeScore();
                 sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::green);
+
+
+
             } else {
                 // Gültig aber nicht richtig -> gelb
                 // Beispiel: Setzen Sie den Hintergrund der Zelle auf gelb
@@ -190,9 +199,22 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
         // Beispiel: Aktualisieren Sie die GUI
         //updateGUI();
         updateGUI();
-    } else { //kann weg
+    } else { //TODO ungültige eingabe handlen
         key = ' ';
     }
+}
+
+
+
+
+bool Sudoku:: checkIfContains(std::vector<char> vector, char Key) {
+    for(int i = 0; i < vector.size(); i++) {
+        if (vector[i] == Key) {
+            return true;
+        }
+
+    }
+    return false;
 }
 
 
@@ -203,6 +225,7 @@ void Sudoku::changePlayer() {
         currentPlayer++;
     }
     ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
+    usedCharsInTurn.clear();
 
 }
 void Sudoku::changeScore() {
@@ -330,6 +353,12 @@ void Sudoku::createSolution() {
     }
 
     updateGUI();
+    //alle grün machen
+    for (int i = 0; i < fields.size(); i++) {
+        if(sudokuTable->item(getRowFrom(i), getColumnFrom(i))->text() != ' ')
+        sudokuTable->item(getRowFrom(i), getColumnFrom(i))->setBackgroundColor(Qt::green);
+    }
+
 }
 
 void Sudoku::initalizeBlock(const int pos) {
