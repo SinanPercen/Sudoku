@@ -53,6 +53,7 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     for (int i = 0; i < playerSize; i++) {
         QString name = "Player ";
         name.append(QString::number(i + 1));
+        players.push_back(name);
         //players[i] = name;
         addPlayer(name); //kann weg
     }
@@ -130,8 +131,13 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
 
 
     // Hier können Sie die erlaubten Zeichen anpassen
-    //QString allowedChars = "123456789ABCDEF"; //methode
+    //wenn das Zeichen ein Buchstabe ist
+    int asciiValue = static_cast<int>(key);
+    if (asciiValue >= 97 & asciiValue <= 122) {
+        key = std::toupper(key);
+    }
     std::vector<char> allowedChars = getAllowedCharacters();
+    if(97 -122)
 
     //wenn gefunden, gibt key zurück und wenn nicht, gibt allowedChars.end() zurück
     if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
