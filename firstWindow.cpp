@@ -12,7 +12,7 @@ firstWindow::firstWindow(QWidget *parent)
     ui->errorLabel->setStyleSheet("color: red");
     connect(ui->startButton, &QPushButton::clicked, this, &firstWindow::on_Start_clicked);
 }
-
+//commit
 firstWindow::~firstWindow()
 {
     delete ui;

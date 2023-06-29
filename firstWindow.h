@@ -1,4 +1,4 @@
-
+//comit
 #include <QThread>
 
 #include <QtConcurrent/QtConcurrent>
