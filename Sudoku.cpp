@@ -104,31 +104,53 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
     qDebug() << "Row Position:" << rowPos;
     qDebug() << "Column Position:" << columnPos;
     qDebug() << "Block Position:" << blockPos;
-    qDebug() << "Pos:" << pos; //commit
-
-
+    qDebug() << "Pos:" << pos;
 }
 
 void Sudoku::keyPressEvent(QKeyEvent *event) {
-    if (event->count() != 1) {
+    /*if (event->count() != 1) {
         return;
     }
-    char key = event->key();
-    std::cout << "Pressed Key " << key << std::endl;
-    std::vector<char> allowedChars = getAllowedCharacters();
 
-    if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
+    QChar key = event->text().at(0);
+
+    // Hier können Sie die erlaubten Zeichen anpassen
+    QString allowedChars = "123456789ABCDEF";
+
+    if (allowedChars.contains(key, Qt::CaseInsensitive)) {
         if (key == ' ') {
             updateGUI();
-
             return;
         }
-        //wenn gültig und richtig -> grün
-        //wenn gültig aber nicht richtig -> gelb
-        //wenn nicht gültig -> rot
-    }
 
+        int row = sudokuTable->currentIndex().row();
+        int column = sudokuTable->currentIndex().column();
+
+        // Überprüfen, ob die Eingabe gültig und richtig ist
+        bool isValid = isValidInput(key, row, column);
+        bool isCorrect = isCorrectInput(key, row, column);
+
+        if (isValid) {
+            if (isCorrect) {
+                // Gültig und richtig -> grün
+                // Beispiel: Setzen Sie den Hintergrund der Zelle auf grün
+                sudokuTable->item(row, column)->setBackground(Qt::green);
+            } else {
+                // Gültig aber nicht richtig -> gelb
+                // Beispiel: Setzen Sie den Hintergrund der Zelle auf gelb
+                sudokuTable->item(row, column)->setBackground(Qt::yellow);
+            }
+        } else {
+            // Nicht gültig -> rot
+            // Beispiel: Setzen Sie den Hintergrund der Zelle auf rot
+            sudokuTable->item(row, column)->setBackground(Qt::red);
+        }
+
+        // Beispiel: Aktualisieren Sie die GUI
+        updateGUI();
+    }*/
 }
+
 
 
 

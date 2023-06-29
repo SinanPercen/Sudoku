@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTableWidget>
+#include <QMainWindow>
 #include "ui_sudoku.h"
 #include "cmath"
 
