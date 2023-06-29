@@ -133,6 +133,8 @@ private:
     void initialGUI();
 
     void changePlayer();
+
+    void changeScore();
 };
 
 #endif // SUDOKU_H

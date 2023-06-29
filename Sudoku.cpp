@@ -59,13 +59,26 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
         players.append(name);
         scores.push_back(0);
         //players = name;
-        addPlayer(name);
+        //addPlayer(name);
     }
+    //Start Eingabedaten initialisieren
+
+
+
+    for (int i = 0; i < playerSize; i++) {
+        playerTable->insertRow(i);
+        QTableWidgetItem* nameItem = new QTableWidgetItem(players[i]);
+        QTableWidgetItem* scoreItem = new QTableWidgetItem(QString::number(scores[i])); //in QTSTring machen
+        scoreItem->setTextAlignment(Qt::AlignCenter);
+
+        playerTable->setItem(i, 0, nameItem);
+        playerTable->setItem(i, 1, scoreItem);
+
+
+    }
+    playerTable->repaint();
+
     ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
-
-
-
-
 
     /**
      *
@@ -118,8 +131,10 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
         return;
     }
 
+    //taste einlesen
     QChar qtKey = event->text().at(0);
     char key= qtKey.toLatin1();
+    int score = 0;
     fields[currentPosition] = key;
     //tabele reinschreiben
     std::cout << "Taste: " << key;
@@ -137,10 +152,10 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
 
     //wenn gefunden, gibt key zurück und wenn nicht, gibt allowedChars.end() zurück
     if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
+        int addToScore;
 
-        if (key == ' ') { //wäre nicht drin
-            updateGUI();
-            return;
+        if (asciiValue > 96 ) { //wäre nicht drin
+             addToScore = asciiValue-87;
         }
 
 
@@ -153,6 +168,8 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
                 // Gültig und richtig -> grün
                 // Beispiel: Setzen Sie den Hintergrund der Zelle auf grün
                 //score add key
+                scores[currentPlayer] += addToScore;
+                changeScore();
                 sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::green);
             } else {
                 // Gültig aber nicht richtig -> gelb
@@ -187,6 +204,16 @@ void Sudoku::changePlayer() {
     }
     ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
 
+}
+void Sudoku::changeScore() {
+
+    QTableWidgetItem* scoreItem = new QTableWidgetItem(QString::number(scores[currentPlayer]));
+    scoreItem->setTextAlignment(Qt::AlignCenter);
+    //playerTable->setItem(row, 0, nameItem);
+    //playerTable->setItem(row, 1, scoreItem);
+    ui->playerTable->setItem(currentPlayer, 1, scoreItem);
+
+    playerTable->repaint();
 }
 
 class Attempt {
