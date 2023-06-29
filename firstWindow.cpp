@@ -12,7 +12,7 @@ firstWindow::firstWindow(QWidget *parent)
     ui->errorLabel->setStyleSheet("color: red");
     connect(ui->startButton, &QPushButton::clicked, this, &firstWindow::on_Start_clicked);
 }
-//commit
+
 firstWindow::~firstWindow()
 {
     delete ui;
@@ -22,12 +22,12 @@ firstWindow::~firstWindow()
         ui->errorLabel->clear();
         //Extrahiere die Größe des Sudokufelds
         QString fieldSize = ui->gridSizeComboBox->currentText();
-        /**
-         *
+
+
 
         if (fieldSize.isEmpty()) {
             fieldSize = "9x9"; // Setze Standardwert auf 9x9
-        }*/
+        }
         QStringList sizeParts = fieldSize.split("x");
         int size = sizeParts[0].toInt();
 
