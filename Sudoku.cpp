@@ -142,7 +142,7 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
     std::cout << "Taste: " << key;
     qDebug() << "Taste:" << key;
 
-    fields[currentPosition] = key;
+
     // Hier können Sie die erlaubten Zeichen anpassen
     //wenn das Zeichen ein Buchstabe ist
     int asciiValue = static_cast<int>(key);
@@ -160,6 +160,7 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
         }
     }
 
+    fields[currentPosition] = key;
     //wenn gefunden, gibt key zurück und wenn nicht, gibt allowedChars.end() zurück
     if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) { //TODO
         int addToScore = asciiValue;
@@ -191,7 +192,7 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
             // Beispiel: Setzen Sie den Hintergrund der Zelle auf rot
             //player next
             sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::red);
-            //spieler wecheln  changePlayer();
+            //spieler wecheln
             changePlayer();
 
         }
