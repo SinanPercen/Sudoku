@@ -62,7 +62,7 @@ private:
      * in methoden ausgelagert
      * @param pos
      * @return
-*/
+
     [[nodiscard]] SudokuPos getPos(int pos) const {
         SudokuPos sudokuPos{
         };
@@ -70,7 +70,7 @@ private:
         sudokuPos.column = pos % gridSize();
         sudokuPos.block = (pos/(gridSize()*blockSize()))*blockSize() + sudokuPos.column/blockSize();
         return sudokuPos;
-    }
+    }*/
 /**
  *
  * @return

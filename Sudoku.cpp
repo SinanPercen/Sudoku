@@ -10,6 +10,7 @@
 #include "cmath"
 #include "set"
 #include <QDebug>
+#include <QKeyEvent>
 
 Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
                                                                   ui(new Ui::SudokuClass), size(size*size) {
@@ -93,10 +94,13 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
     // Position des geklickten Elements ermitteln
     int pos = row * gridSize() + column;
 
+    currentPosition = pos;
+
     int rowPos = getRowFrom(pos);
     int columnPos = getColumnFrom(pos);
     int blockPos = getBlockFrom(pos);
 
+    //test
     qDebug() << "Row Position:" << rowPos;
     qDebug() << "Column Position:" << columnPos;
     qDebug() << "Block Position:" << blockPos;
@@ -106,6 +110,22 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
 }
 
 void Sudoku::keyPressEvent(QKeyEvent *event) {
+    if (event->count() != 1) {
+        return;
+    }
+    char key = event->key();
+    std::vector<char> allowedChars = getAllowedCharacters();
+
+    if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
+        if (key == ' ') {
+            updateGUI();
+
+            return;
+        }
+        //wenn gültig und richtig -> grün
+        //wenn gültig aber nicht richtig -> gelb
+        //wenn nicht gültig -> rot
+    }
 
 }
 
@@ -181,8 +201,6 @@ void Sudoku::updateGUI() {
 }*/
 void Sudoku::updateGUI() {
     for(int i = 0; i < size; i++) {
-        //SudokuPos pos = this->getPos(i);
-        //TODO bessere umwandlung zu QString ?
         QTableWidgetItem *entry = new QTableWidgetItem(QString::fromStdString(std::string(1, fields.at(i))));
         entry->setTextAlignment(Qt::AlignCenter);
         sudokuTable->setItem(getRowFrom(i), getColumnFrom(i), entry);
