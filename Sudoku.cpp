@@ -57,7 +57,7 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
         //players[i] = name;
         addPlayer(name); //kann weg
     }
-
+//test
     //methode - mouse_clicked methode im konstruktor, dann currentCell variable setzen (herausfinden welche zelle man ist)
     //while schleife
     //for schleife anzahl der spieler
