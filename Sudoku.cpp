@@ -114,6 +114,7 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
         return;
     }
     char key = event->key();
+    std::cout << "Pressed Key " << key << std::endl;
     std::vector<char> allowedChars = getAllowedCharacters();
 
     if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
