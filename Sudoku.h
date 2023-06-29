@@ -38,6 +38,8 @@ private:
     QList<Player> playerList;
     const int size;
     std::vector<char> fields;
+    int currentPlayer = 0;
+    int currentPosition = -1;
 
     [[nodiscard]] int gridSize() const {
         return sqrt(size);
@@ -118,6 +120,8 @@ private:
     [[nodiscard]] bool isPossible(int pos, char guess) const;
 
     void tableMouseClicked(const QModelIndex &index);
+
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // SUDOKU_H

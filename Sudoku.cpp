@@ -102,7 +102,13 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
     qDebug() << "Block Position:" << blockPos;
     qDebug() << "Pos:" << pos; //commit
 
+
 }
+
+void Sudoku::keyPressEvent(QKeyEvent *event) {
+
+}
+
 
 
 class Attempt {
