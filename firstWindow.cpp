@@ -2,7 +2,7 @@
 #include "firstWindow.h"
 #include "ui_firstWindow.h"
 #include "Sudoku.h"
-
+//test
 firstWindow::firstWindow(QWidget *parent)
         : QMainWindow(parent),
           ui(new Ui::mainWindow)
