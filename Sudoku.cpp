@@ -37,7 +37,9 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     sudokuTable->verticalHeader()->setDefaultSectionSize(32);
     sudokuTable->verticalHeader()->setHighlightSections(false);
     sudokuTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
+    sudokuTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    sudokuTable->setFocusPolicy(Qt::NoFocus);
+    sudokuTable->setSelectionMode(QAbstractItemView::NoSelection);
 
     QTableWidget::connect(sudokuTable, &QTableWidget::clicked, this, &Sudoku::tableMouseClicked);
 
@@ -88,6 +90,9 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
 
 void Sudoku::tableMouseClicked(const QModelIndex &index) {
 
+    qDebug() << "klick test";
+    qDebug() << "klick mal 2 test";
+
     int row = index.row();
     int column = index.column();
 
@@ -108,47 +113,58 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
 }
 
 void Sudoku::keyPressEvent(QKeyEvent *event) {
-    /*if (event->count() != 1) {
+    qDebug() << "test:";
+    if (event->count() != 1) {
         return;
     }
 
-    QChar key = event->text().at(0);
+    QChar qtKey = event->text().at(0);
+    char key= qtKey.toLatin1();
+    fields[currentPosition] = key;
+    //tabele reinschreiben
+    std::cout << "Taste: " << key;
+    qDebug() << "Taste:" << key;
 
+    updateGUI();
     // Hier können Sie die erlaubten Zeichen anpassen
-    QString allowedChars = "123456789ABCDEF";
+    //QString allowedChars = "123456789ABCDEF"; //methode
+    std::vector<char> allowedChars = getAllowedCharacters();
 
-    if (allowedChars.contains(key, Qt::CaseInsensitive)) {
-        if (key == ' ') {
+    //wenn gefunden, gibt key zurück und wenn nicht, gibt allowedChars.end() zurück
+    if(std::find(allowedChars.begin(), allowedChars.end(), key) != allowedChars.end()) {
+
+        if (key == ' ') { //wäre nicht drin
             updateGUI();
             return;
         }
 
-        int row = sudokuTable->currentIndex().row();
-        int column = sudokuTable->currentIndex().column();
 
         // Überprüfen, ob die Eingabe gültig und richtig ist
-        bool isValid = isValidInput(key, row, column);
-        bool isCorrect = isCorrectInput(key, row, column);
+        //bool isValid = isValidInput(key, row, column);
+        //bool isCorrect = isCorrectInput(key, row, column);
 
-        if (isValid) {
-            if (isCorrect) {
+        if (isPossible(currentPosition, key)) {
+            if (key == solutionFields[currentPosition]) {
                 // Gültig und richtig -> grün
                 // Beispiel: Setzen Sie den Hintergrund der Zelle auf grün
-                sudokuTable->item(row, column)->setBackground(Qt::green);
+                //score add key
+                sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackground(Qt::green);
             } else {
                 // Gültig aber nicht richtig -> gelb
                 // Beispiel: Setzen Sie den Hintergrund der Zelle auf gelb
-                sudokuTable->item(row, column)->setBackground(Qt::yellow);
+                sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackground(Qt::yellow);
+                //vllt wechseln?
             }
         } else {
             // Nicht gültig -> rot
             // Beispiel: Setzen Sie den Hintergrund der Zelle auf rot
-            sudokuTable->item(row, column)->setBackground(Qt::red);
+            //player next
+            sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackground(Qt::red);
         }
 
         // Beispiel: Aktualisieren Sie die GUI
         updateGUI();
-    }*/
+    }
 }
 
 
@@ -240,6 +256,7 @@ void Sudoku::createSolution() {
     }
 
     complete(1);
+    solutionFields.assign(fields.begin(), fields.end());
     //TODO maxDelete
     int maxDelete = 40;
     std::set<int> deleted;
@@ -352,7 +369,7 @@ int Sudoku::complete(const int maxSolutions) {
 
     return -1;
 }
-
+//freies feld für complete finden - ändern
 int Sudoku::findFree() const {
     for(int i = 0; i < size; i++) {
         if(fields.at(i) == ' ') {

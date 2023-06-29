@@ -6,6 +6,8 @@
 #include <QMainWindow>
 #include "ui_sudoku.h"
 #include "cmath"
+#include <iostream>
+#include <vector>
 
 
 class Sudoku : public QMainWindow
@@ -39,8 +41,10 @@ private:
     QList<Player> playerList;
     const int size;
     std::vector<char> fields;
+    std::vector<char> solutionFields;
     int currentPlayer = 0;
     int currentPosition = -1;
+    std::vector<char> players;
 
     [[nodiscard]] int gridSize() const {
         return sqrt(size);
