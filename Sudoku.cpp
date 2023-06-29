@@ -9,6 +9,7 @@
 #include "Sudoku.h"
 #include "cmath"
 #include "set"
+#include <QDebug>
 
 Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
                                                                   ui(new Ui::SudokuClass), size(size*size) {
@@ -86,6 +87,20 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
 
 void Sudoku::tableMouseClicked(const QModelIndex &index) {
 
+    int row = index.row();
+    int column = index.column();
+
+    // Position des geklickten Elements ermitteln
+    int pos = row * gridSize() + column;
+
+    int rowPos = getRowFrom(pos);
+    int columnPos = getColumnFrom(pos);
+    int blockPos = getBlockFrom(pos);
+
+    qDebug() << "Row Position:" << rowPos;
+    qDebug() << "Column Position:" << columnPos;
+    qDebug() << "Block Position:" << blockPos;
+    qDebug() << "Pos:" << pos;
 
 }
 
