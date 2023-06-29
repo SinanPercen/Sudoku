@@ -199,9 +199,13 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
         // Beispiel: Aktualisieren Sie die GUI
         //updateGUI();
         updateGUI();
-    } else { //TODO ungültige eingabe handlen
-
     }
+    /**
+     *
+
+    else { //TODO ungültige eingabe handlen
+
+    }*/
 }
 
 
