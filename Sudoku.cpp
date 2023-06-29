@@ -100,7 +100,7 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
     qDebug() << "Row Position:" << rowPos;
     qDebug() << "Column Position:" << columnPos;
     qDebug() << "Block Position:" << blockPos;
-    qDebug() << "Pos:" << pos;
+    qDebug() << "Pos:" << pos; //commit
 
 }
 
