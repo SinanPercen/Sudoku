@@ -53,7 +53,8 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     for (int i = 0; i < playerSize; i++) {
         QString name = "Player ";
         name.append(QString::number(i + 1));
-        addPlayer(name);
+        //players[i] = name;
+        addPlayer(name); //kann weg
     }
 
     //methode - mouse_clicked methode im konstruktor, dann currentCell variable setzen (herausfinden welche zelle man ist)
@@ -127,7 +128,7 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
     std::cout << "Taste: " << key;
     qDebug() << "Taste:" << key;
 
-    updateGUI();
+
     // Hier können Sie die erlaubten Zeichen anpassen
     //QString allowedChars = "123456789ABCDEF"; //methode
     std::vector<char> allowedChars = getAllowedCharacters();
@@ -166,6 +167,9 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
 
         // Beispiel: Aktualisieren Sie die GUI
         //updateGUI();
+        updateGUI();
+    } else { //kann weg
+        key = ' ';
     }
 }
 
@@ -228,18 +232,7 @@ void Sudoku::showCurrentName(const QString& name){
 
 }
 
-/**
- *
 
-void Sudoku::updateGUI() {
-    for(int i = 0; i < size; i++) {
-        SudokuPos pos = this->getPos(i);
-        //TODO bessere umwandlung zu QString ?
-        QTableWidgetItem *entry = new QTableWidgetItem(QString::fromStdString(std::string(1, fields.at(i))));
-        entry->setTextAlignment(Qt::AlignCenter);
-        sudokuTable->setItem(pos.row, pos.column, entry);
-    }
-}*/
 
 void Sudoku::initialGUI() {
     for(int i = 0; i < size; i++) {

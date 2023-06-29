@@ -44,7 +44,7 @@ private:
     std::vector<char> solutionFields;
     int currentPlayer = 0;
     int currentPosition = -1;
-    std::vector<char> players;
+   // std::vector<QString> players;
 
     [[nodiscard]] int gridSize() const {
         return sqrt(size);
