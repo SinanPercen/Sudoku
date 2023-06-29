@@ -1,4 +1,0 @@
-/tank/home/12ibbi1bif/Sudoku/cmake-build-debug/CMakeFiles/Sudoku.dir
-/tank/home/12ibbi1bif/Sudoku/cmake-build-debug/CMakeFiles/edit_cache.dir
-/tank/home/12ibbi1bif/Sudoku/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/tank/home/12ibbi1bif/Sudoku/cmake-build-debug/CMakeFiles/Sudoku_autogen.dir
