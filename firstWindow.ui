@@ -99,6 +99,32 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="difficultyLabel">
+        <property name="text">
+         <string>Which difficulty?</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="difficultyComboBox">
+        <item>
+         <property name="text">
+          <string>easy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>medium</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>difficult</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="startButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">

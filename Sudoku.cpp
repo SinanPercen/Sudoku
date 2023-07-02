@@ -77,28 +77,16 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
 
         playerTable->setItem(i, 0, nameItem);
         playerTable->setItem(i, 1, scoreItem);
-
-
+        if (i==0) {
+            nameItem->setBackgroundColor(Qt::yellow);
+        }
     }
     playerTable->repaint();
 
+
     ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
 
-    /**
-     *
 
-    Player players[playerCount];
-    for (int i = 0; i < playerCount; i++){
-        players[i].name = nameList.value(i);
-        players[i].score = 0;
-    }
-    //Schleife zum Hinzufügen der Spieler in die playerTable
-    for (int i = 0; i < playerCount; i++) {
-        QString playerName = nameList.value(i);
-        addPlayer(playerName);
-    }
-    showCurrentName(players[0].name);
-    */
     // Speichern der Highscores
     //std::vector<Player> playerVector(players, players + playerCount); // Konvertiere Array in einen Vektor
     //saveHighscore(playerVector, "highscores.bin");
@@ -130,10 +118,14 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
 }
 
 void Sudoku::keyPressEvent(QKeyEvent *event) {
+    ui->statusLabel->clear();
     qDebug() << "test:";
     if (event->count() != 1) {
         return;
     }
+    try {
+
+
 
     //taste einlesen
     QChar qtKey = event->text().at(0);
@@ -179,6 +171,9 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
                 changeScore();
                 sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::green);
 
+                if(checkIfGameWon()) {
+                    ui->statusLabel->setText("Spiel vorbei!");
+                }
 
 
             } else {
@@ -195,11 +190,16 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
             //spieler wecheln
             changePlayer();
 
+
         }
 
         // Beispiel: Aktualisieren Sie die GUI
         //updateGUI();
         updateGUI();
+    } else {
+        ui->statusLabel->setText("Ungültige Eingabe");
+        throw std::runtime_error("Eingabefehler");
+
     }
     /**
      *
@@ -207,6 +207,9 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
     else { //TODO ungültige eingabe handlen
 
     }*/
+    } catch (const std::exception& e) {
+        std::cout << "Fehler: " << e.what() << std::endl;
+    }
 }
 
 
@@ -224,13 +227,21 @@ bool Sudoku:: checkIfContains(std::vector<char> vector, char Key) {
 
 
 void Sudoku::changePlayer() {
+
+    int previousPlayer = currentPlayer;
+
     if (currentPlayer == amountPlayers - 1) {
         currentPlayer = 0;
     } else {
         currentPlayer++;
     }
     ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
+    playerTable->item(previousPlayer, 0)->setBackgroundColor(Qt::white);
+    playerTable->item(currentPlayer, 0)->setBackgroundColor(Qt::yellow);
+
+
     usedCharsInTurn.clear();
+
 
 }
 void Sudoku::changeScore() {
@@ -240,6 +251,8 @@ void Sudoku::changeScore() {
     //playerTable->setItem(row, 0, nameItem);
     //playerTable->setItem(row, 1, scoreItem);
     ui->playerTable->setItem(currentPlayer, 1, scoreItem);
+
+
 
     playerTable->repaint();
 }
@@ -309,6 +322,16 @@ void Sudoku::initialGUI() {
         sudokuTable->setItem(getRowFrom(i), getColumnFrom(i), entry);
     }
 }
+
+bool Sudoku::checkIfGameWon() {
+    for (int i = 0; i < fields.size(); i++) {
+        if(sudokuTable->item(getRowFrom(i), getColumnFrom(i))->backgroundColor() != Qt::green) {
+           return false;
+        }
+    }
+    return true;
+}
+
 
 void Sudoku::updateGUI() {
     for(int i = 0; i < size; i++) {

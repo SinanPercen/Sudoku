@@ -138,6 +138,8 @@ private:
     void changeScore();
 
     bool checkIfContains(std::vector<char> vector, char Key);
+
+    bool checkIfGameWon();
 };
 
 #endif // SUDOKU_H
