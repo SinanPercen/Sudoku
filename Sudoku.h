@@ -16,13 +16,16 @@ Q_OBJECT
 
 public:
     explicit Sudoku(int size, int playerSize, QWidget *parent = nullptr);
+/**
+ *
+
     struct Player{
         QString name;
         int score;
-    };
+    }; */
     /**
      * unnötig weil methoden
-    */
+
     struct SudokuPos {
         int row;
         int column;
@@ -32,13 +35,13 @@ public:
 public slots:
     void addPlayer(const QString& name);
     void showCurrentName(const QString &name);
-
+    */
 private:
     Ui::SudokuClass *ui;
     QLabel currentName;
     QTableWidget* sudokuTable;
     QTableWidget* playerTable;
-    QList<Player> playerList;
+    //QList<Player> playerList;
     const int size;
     std::vector<char> fields;
     std::vector<char> solutionFields;
@@ -137,7 +140,7 @@ private:
 
     void changeScore();
 
-    bool checkIfContains(std::vector<char> vector, char Key);
+    //bool checkIfContains(std::vector<char> vector, char Key);
 
     bool checkIfGameWon();
 };
