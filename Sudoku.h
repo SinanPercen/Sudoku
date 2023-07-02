@@ -16,26 +16,7 @@ Q_OBJECT
 
 public:
     explicit Sudoku(int size, int playerSize, QWidget *parent = nullptr);
-/**
- *
 
-    struct Player{
-        QString name;
-        int score;
-    }; */
-    /**
-     * unnötig weil methoden
-
-    struct SudokuPos {
-        int row;
-        int column;
-        int block;
-    };
-
-public slots:
-    void addPlayer(const QString& name);
-    void showCurrentName(const QString &name);
-    */
 private:
     Ui::SudokuClass *ui;
     QLabel currentName;
@@ -68,39 +49,7 @@ private:
     int getBlockFrom(int pos) const {
         return (pos/(gridSize()*blockSize()))*blockSize() + getColumnFrom(pos)/blockSize();
     }
-    /**
-     * in methoden ausgelagert
-     * @param pos
-     * @return
 
-    [[nodiscard]] SudokuPos getPos(int pos) const {
-        SudokuPos sudokuPos{
-        };
-        sudokuPos.row = pos / gridSize();
-        sudokuPos.column = pos % gridSize();
-        sudokuPos.block = (pos/(gridSize()*blockSize()))*blockSize() + sudokuPos.column/blockSize();
-        return sudokuPos;
-    }*/
-/**
- *
- * @return
-
-    [[nodiscard]] std::vector<char> getAllowedCharacters() const {
-        std::vector<char> allowed;
-        for(int i = 0; i < gridSize(); i++) {
-            //zuerst alle Zahlen, dann ab Ascii Code für A weiter
-            int base;
-            if(i < 9) {
-                //49 ist Ascii Code für 1
-                allowed.push_back(char(49 + i));
-            } else {
-                //65 ist Ascii Code für A
-                allowed.push_back(char(65-9+i));
-            }
-        }
-        return allowed;
-    }
-    */
     [[nodiscard]] std::vector<char> getAllowedCharacters() const {
         std::vector<char> allowed;
         for (int i = 1; i <= gridSize(); i++) {
@@ -112,16 +61,7 @@ private:
         }
         return allowed;
     }
-    /** besser? für oben
-     *
-     for (int i = 1; i <= gridSize; i++) {
-    if (i <= 9) {
-        allowed.push_back('0' + i);
-    } else {
-        allowed.push_back('A' + (i - 10));
-    }
-}
-     */
+
     void updateGUI();
     void createSolution();
     void initalizeBlock(int pos);
@@ -138,8 +78,6 @@ private:
     void changePlayer();
 
     void changeScore();
-
-    //bool checkIfContains(std::vector<char> vector, char Key);
 
     bool checkIfGameWon();
 };
