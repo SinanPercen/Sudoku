@@ -48,7 +48,6 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     //Initialisiere GUI
     initialGUI();
 
-
     //Initalisieren des Felds
     createSolution();
 
@@ -60,13 +59,9 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
         qDebug() << "name" << name;
         players.append(name);
         scores.push_back(0);
-        //players = name;
-        //addPlayer(name);
     }
-    //Start Eingabedaten initialisieren
 
-
-
+    //Spieler erstellen und in Tabelle hinzufügen
     for (int i = 0; i < playerSize; i++) {
         playerTable->insertRow(i);
         QTableWidgetItem* nameItem = new QTableWidgetItem(players[i]);
@@ -80,15 +75,7 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
         }
     }
     playerTable->repaint();
-
-
     ui->currentName->setText(players[currentPlayer]); //aktuellen namen setzen und in gui anzeigen lassen
-
-
-    // Speichern der Highscores
-    //std::vector<Player> playerVector(players, players + playerCount); // Konvertiere Array in einen Vektor
-    //saveHighscore(playerVector, "highscores.bin");
-
 }
 
 void Sudoku::tableMouseClicked(const QModelIndex &index) {
@@ -97,20 +84,7 @@ void Sudoku::tableMouseClicked(const QModelIndex &index) {
 
     // Position des geklickten Elements ermitteln
     int pos = row * gridSize() + column;
-
     currentPosition = pos;
-/**
-    int rowPos = getRowFrom(pos);
-    int columnPos = getColumnFrom(pos);
-    int blockPos = getBlockFrom(pos);
-
- *
-
-    //test
-    qDebug() << "Row Position:" << rowPos;
-    qDebug() << "Column Position:" << columnPos;
-    qDebug() << "Block Position:" << blockPos;
-    qDebug() << "Pos:" << pos; */
 }
 
 void Sudoku::keyPressEvent(QKeyEvent *event) {
@@ -181,25 +155,6 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-
-
-/**
- *
- * @param vector
- * @param Key
- * @return
-
-bool Sudoku:: checkIfContains(std::vector<char> vector, char Key) {
-    for(int i = 0; i < vector.size(); i++) {
-        if (vector[i] == Key) {
-            return true;
-        }
-
-    }
-    return false;
-}
-*/
-
 void Sudoku::changePlayer() {
     int previousPlayer = currentPlayer;
     if (currentPlayer == amountPlayers - 1) {
@@ -232,56 +187,6 @@ public:
         ++charIndex;
     }
 };
-
-/**
- *
- * @param name
-
-void Sudoku::addPlayer(const QString& name){ //umändern - liste machen mit den namen, weitere liste mit den scores
-    Player player;
-    player.name = name;
-    player.score = 0;
-
-    int row = playerTable->rowCount();
-    playerTable->insertRow(row);
-
-    QTableWidgetItem* nameItem = new QTableWidgetItem(player.name);
-    QTableWidgetItem* scoreItem = new QTableWidgetItem(QString::number(player.score));
-    scoreItem->setTextAlignment(Qt::AlignCenter);
-
-    playerTable->setItem(row, 0, nameItem);
-    playerTable->setItem(row, 1, scoreItem);
-
-    playerList.append(player);
-    playerTable->repaint();
-} */
-/**
- *
- * @param name
- * @param score
-
-void Sudoku::updateScore(const QString& name, int score){
-    for (int i = 0; i < playerList.size(); ++i) {
-        if (playerList[i].name == name) {
-            playerList[i].score = score;
-            QTableWidgetItem* scoreItem = playerTable->item(i, 1);
-            if (scoreItem) {
-                scoreItem->setText(QString::number(score));
-            }
-            break;
-        }
-    }
-}*/
-/**
- *
- * @param name
-
-void Sudoku::showCurrentName(const QString& name){
-    ui->currentName->setText(name);
-
-} */
-
-
 
 void Sudoku::initialGUI() {
     for(int i = 0; i < size; i++) {
@@ -434,25 +339,7 @@ int Sudoku::findFree() const {
     }
     return -1;
 }
-/**
- *
- * @param pos
- * @param guess
- * @return
 
-bool Sudoku::isPossible(int pos, char guess) const {
-    SudokuPos sudokuPos = getPos(pos);
-    for(int i = 0; i < size; i++) {
-        if(i == pos || fields.at(i) != guess) {
-            continue;
-        }
-        SudokuPos other = getPos(i);
-        if(sudokuPos.block == other.block || sudokuPos.row == other.row || sudokuPos.column == other.column) {
-            return false;
-        }
-    }
-    return true;
-} */
 bool Sudoku::isPossible(int pos, char guess) const {
     for(int i = 0; i < size; i++) {
         if(i == pos || fields.at(i) != guess) {

@@ -41,7 +41,6 @@ private:
     QLabel currentName;
     QTableWidget* sudokuTable;
     QTableWidget* playerTable;
-    //QList<Player> playerList;
     const int size;
     std::vector<char> fields;
     std::vector<char> solutionFields;
