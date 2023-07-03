@@ -15,7 +15,7 @@ class Sudoku : public QMainWindow
 Q_OBJECT
 
 public:
-    explicit Sudoku(int size, int playerSize, QWidget *parent = nullptr);
+    explicit Sudoku(int size, int playerSize, int difficulty, QWidget *parent = nullptr);
 
 private:
     Ui::SudokuClass *ui;
@@ -31,6 +31,7 @@ private:
     std::vector<int> scores;
     int amountPlayers = 0;
     std::vector<char> usedCharsInTurn;
+    int gameDiff;
 
     [[nodiscard]] int gridSize() const {
         return sqrt(size);
@@ -80,6 +81,8 @@ private:
     void changeScore();
 
     bool checkIfGameWon();
+
+    QString checkWinner();
 };
 
 #endif // SUDOKU_H

@@ -14,13 +14,14 @@
 #include <vector>
 #include <algorithm>
 
-Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
+Sudoku::Sudoku(int size, int playerSize, int difficulty, QWidget *parent) : QMainWindow(parent),
                                                                   ui(new Ui::SudokuClass), size(size*size) {
     ui->setupUi(this);
     sudokuTable = ui->sudokuTable;
     amountPlayers = playerSize;
     playerTable = ui->playerTable;
     int gridSize = this->gridSize();
+    gameDiff = difficulty;
     QFont font;
     font.setPointSize(12);
     sudokuTable->setFont(font);
@@ -56,7 +57,6 @@ Sudoku::Sudoku(int size, int playerSize, QWidget *parent) : QMainWindow(parent),
     for (int i = 0; i < playerSize; i++) {
         QString name = "Player ";
         name.append(QString::number(i + 1));
-        qDebug() << "name" << name;
         players.append(name);
         scores.push_back(0);
     }
@@ -133,7 +133,11 @@ void Sudoku::keyPressEvent(QKeyEvent *event) {
                 sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::green);
                 //checken ob spiel vorbei ist
                 if(checkIfGameWon()) {
-                    ui->statusLabel->setText("Spiel vorbei!");
+                    QString winner = checkWinner();
+                    QString output = "Game over! ";
+                    output.append(winner);
+                    output.append(" has won.");
+                    ui->statusLabel->setText(output);
                 }
             } else {  // Gültig aber nicht richtig -> gelb
                 sudokuTable->item(getRowFrom(currentPosition), getColumnFrom(currentPosition))->setBackgroundColor(Qt::yellow);
@@ -188,6 +192,18 @@ public:
     }
 };
 
+QString Sudoku:: checkWinner() {
+    int highest = 0;
+    int currentWinner = 0;
+    for(int i = 0; i < scores.size(); i++) {
+        if (scores[i] > highest) {
+            highest = scores[i];
+            currentWinner = i;
+        }
+    }
+    return players[currentWinner];
+}
+
 void Sudoku::initialGUI() {
     for(int i = 0; i < size; i++) {
         QTableWidgetItem *entry = new QTableWidgetItem(QString::fromStdString(std::string(1, ' ')));
@@ -225,7 +241,18 @@ void Sudoku::createSolution() {
 
     complete(1);
     solutionFields.assign(fields.begin(), fields.end());
-    int maxDelete = 40; //todo difficulty also variabel
+    int maxDelete;
+    switch (gameDiff) {
+        case 1:
+            maxDelete = 2 * gridSize();
+            break;
+        case 2:
+            maxDelete = 3 * gridSize();
+            break;
+        default:
+            maxDelete = 5 * gridSize();
+            break;
+    }
     std::set<int> deleted;
     while(true) {
         int rnd = std::rand() % size;

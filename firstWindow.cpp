@@ -26,8 +26,12 @@ firstWindow::~firstWindow()
         QString playerAmountStr = ui->playerAmountcomboBox->currentText();
         int playerSize = playerAmountStr.toInt();
 
+        //Schwierigkeit einstellen
+        int diff = ui->difficultyComboBox->currentIndex();
+        diff++;
+
         //Sudoku-Fenster
-        Sudoku* sudoku = new Sudoku(size, playerSize);
+        Sudoku* sudoku = new Sudoku(size, playerSize, diff);
         hide();
         sudoku->show();
     }
